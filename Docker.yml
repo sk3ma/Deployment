@@ -48,15 +48,15 @@
         state: latest
         ignore_errors: yes
 
-    - name: Creating directory
+    - name: Nginx directory
       ansible.builtin.file:
-        path: "/container"
+        path: "/container/nginx"
         state: directory
         mode: 'u=rwx,g=rw,o=rw'
 
-    - name: Spawning container
+    - name: Nginx container
       ansible.builtin.debug:
-        msg: '[INFO] STARTING CONTAINER...'
+        msg: '[INFO] SPAWNING CONTAINER...'
 
     - name: Deploying Nginx
       ansible.builtin.docker_container:
@@ -67,6 +67,26 @@
           - "8080:80"
         volumes:
           - "/container:/container"
+
+    - name: Grafana directory
+      ansible.builtin.file:
+        path: "/container/grafana"
+        state: directory
+        mode: 'u=rwx,g=rw,o=rw'
+
+    - name: Grafana container
+      ansible.builtin.debug:
+        msg: '[INFO] SPAWNING CONTAINER...'
+
+    - name: Deploying Grafana
+      ansible.builtin.docker_container:
+        image: grafana/grafana:latest
+        name: grafana
+        state: started
+        ports:
+          - "3000:3000"
+        volumes:
+          - "/container/grafana:/var/lib/grafana"
 
     - name: Issuing late commands
       ansible.builtin.command:
