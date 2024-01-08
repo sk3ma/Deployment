@@ -1,0 +1,5 @@
+- name: Testing reachability
+  hosts: managed_nodes
+  tasks:
+    - name: Ping managed nodes
+      ansible.builtin.ping:
