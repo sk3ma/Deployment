@@ -46,7 +46,7 @@
       ansible.builtin.apt:
         name: docker-ce
         state: latest
-        become: true
+      become: true
 
     - name: Nginx directory
       ansible.builtin.file:
