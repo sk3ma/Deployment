@@ -40,13 +40,13 @@
 
     - name: Updating system
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
 
     - name: Installing Docker
       ansible.builtin.apt:
         name: docker-ce
         state: latest
-        ignore_errors: yes
+        become: true
 
     - name: Nginx directory
       ansible.builtin.file:
