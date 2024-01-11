@@ -1,5 +1,5 @@
 - name: Testing reachability
-  hosts: node1,node2
+  hosts: all
   gather_facts: true
   tasks:
     - name: Ping managed nodes
