@@ -19,21 +19,21 @@
         state: present
         update_cache: false
 
-    - name: Grafana container
-      ansible.builtin.debug:
-        msg: '[INFO] SPAWNING CONTAINER...'
+#    - name: Grafana container
+#      ansible.builtin.debug:
+#        msg: '[INFO] SPAWNING CONTAINER...'
 
-    - name: Grafana container
-      docker_container:
-        name: grafana_container
-        image: grafana/grafana
-        ports:
-          - "3000:3000"
-        state: started
+#    - name: Grafana container
+#      ansible.builtin.docker_container:
+#        name: grafana_container
+#        image: grafana/grafana
+#        ports:
+#          - "3000:3000"
+#        state: started
 
     - name: End message
       ansible.builtin.debug:
-        msg: '[OK] Finished, Grafana deployed.'
+        msg: '[OK] Finished, Docker installed.'
 
     - name: End playbook
       ansible.builtin.meta: end_play
