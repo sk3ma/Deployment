@@ -3,6 +3,7 @@
 # Defining target section.
 - name: Install Docker on Ubuntu
   hosts: managed_nodes
+  become_user: vagrant
   become: true
   gather_facts: true
 
@@ -16,7 +17,7 @@
       ansible.builtin.apt:
         name: docker.io
         state: present
-        update_cache: true
+        update_cache: false
 
     - name: Grafana container
       ansible.builtin.debug:
