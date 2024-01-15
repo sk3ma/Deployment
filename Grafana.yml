@@ -2,7 +2,7 @@
 
 # Defining target section.
 - name: Install Docker on Ubuntu
-  hosts: all
+  hosts: managed_nodes
   become: true
   gather_facts: true
 
