@@ -2,7 +2,7 @@
 
 # Defining target section.
 - name: Install Docker on Ubuntu
-  hosts: managed_nodes
+  hosts: node1,node2
   become_user: vagrant
   become: true
   gather_facts: true
