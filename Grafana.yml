@@ -1,0 +1,41 @@
+---
+
+# Defining target section.
+- name: Install Docker on Ubuntu
+  hosts: managed_nodes
+  become: true
+  gather_facts: true
+
+# Defining task section.
+  tasks:
+    - name: Installing Docker
+      ansible.builtin.debug:
+        msg: '[INFO] INSTALLING DOCKER...'
+
+    - name: Updating repository
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Installing Docker
+      ansible.builtin.apt:
+        name: docker.io
+        state: present
+
+    - name: Grafana container
+      ansible.builtin.debug:
+        msg: '[INFO] SPAWNING CONTAINER...'
+
+    - name: Grafana container
+      ansible.builtin.docker_container:
+        name: grafana_container
+        image: grafana/grafana
+        ports:
+          - "3000:3000"
+        state: started
+
+    - name: End message
+      ansible.builtin.debug:
+        msg: '[OK] Finished, Grafana deployed.'
+
+    - name: End playbook
+      ansible.builtin.meta: end_play
