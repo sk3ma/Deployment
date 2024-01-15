@@ -2,7 +2,7 @@
 
 # Defining target section.
 - name: Install Docker on Ubuntu
-  hosts: managed_nodes
+  hosts: all
   become: true
   gather_facts: true
 
@@ -14,8 +14,7 @@
 
     - name: Updating repository
       ansible.builtin.apt:
-        update_cache: yes
-        become: true
+        update_cache: true
 
     - name: Installing Docker
       ansible.builtin.apt:
