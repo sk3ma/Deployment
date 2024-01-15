@@ -12,14 +12,11 @@
       ansible.builtin.debug:
         msg: '[INFO] INSTALLING DOCKER...'
 
-    - name: Updating repository
-      ansible.builtin.apt:
-        update_cache: true
-
     - name: Installing Docker
       ansible.builtin.apt:
         name: docker.io
         state: present
+        update_cache: true
 
     - name: Grafana container
       ansible.builtin.debug:
