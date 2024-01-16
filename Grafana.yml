@@ -1,0 +1,104 @@
+---
+
+##########################################################
+# An Ansible playbook to install Docker on Ubuntu 22.04. #
+##########################################################
+
+# Defining target section.
+- name: Install Docker and deploy Nginx
+  hosts: managed_nodes
+  become: true
+  gather_facts: true
+
+  # Defining task section.
+  tasks:
+    - name: Installing Docker
+      ansible.builtin.debug:
+        msg: '[INFO] INSTALLING DOCKER...'
+  
+    - name: Installing packages
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - software-properties-common
+          - curl
+          - gnupg
+        state: latest
+        update_cache: true
+
+    - name: Adding key
+      ansible.builtin.apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
+
+    - name: Adding repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"
+        state: present
+        filename: docker
+
+    - name: Updating system
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Installing Docker
+      ansible.builtin.apt:
+        name: docker-ce
+        state: latest
+      become: true
+
+    - name: Nginx directory
+      ansible.builtin.file:
+        path: "/container/nginx"
+        state: directory
+        mode: 'u=rwx,g=rw,o=rw'
+
+    - name: Nginx container
+      ansible.builtin.debug:
+        msg: '[INFO] SPAWNING CONTAINER...'
+
+    - name: Deploying Nginx
+      ansible.builtin.docker_container:
+        image: nginx:latest
+        name: nginx
+        state: started
+        ports:
+          - "8080:80"
+        volumes:
+          - "/container:/container"
+
+    - name: Grafana directory
+      ansible.builtin.file:
+        path: "/container/grafana"
+        state: directory
+        mode: 'u=rwx,g=rw,o=rw'
+
+    - name: Grafana container
+      ansible.builtin.debug:
+        msg: '[INFO] SPAWNING CONTAINER...'
+
+    - name: Deploying Grafana
+      ansible.builtin.docker_container:
+        image: grafana/grafana:latest
+        name: grafana
+        state: started
+        ports:
+          - "3000:3000"
+        volumes:
+          - "/container/grafana:/var/lib/grafana"
+
+    - name: Issuing late commands
+      ansible.builtin.command:
+        cmd: |
+          sudo systemctl status docker
+          sudo docker ps -a
+        chdir: /container
+      changed_when: false
+
+    - name: End message
+      ansible.builtin.debug:
+        msg: '[OK] Finished, Docker installed and Nginx deployed.'
+
+    - name: End playbook
+      ansible.builtin.meta: end_play
