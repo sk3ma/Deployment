@@ -1,0 +1,43 @@
+---
+
+# Defining target section.
+- name: Install Docker on Ubuntu
+  hosts: managed_nodes
+  become_user: vagrant
+  become: true
+  gather_facts: true
+
+# Defining task section.
+  tasks:
+    - name: Patching Systems
+      ansible.builtin.debug:
+        msg: '[INFO] PATCHING SYSTEMS...'
+
+  tasks:
+    - name: Updating repository
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Upgrading packages
+      ansible.builtin.apt:
+        upgrade: yes
+        autoremove: yes
+
+    - name: Installing Packages
+      ansible.builtin.debug:
+        msg: '[INFO] INSTALLING PACKAGES...'
+
+    - name: Installing Docker
+      ansible.builtin.apt:
+        name:
+          - curl
+          - vim
+          - tree
+        state: present
+
+    - name: End message
+      ansible.builtin.debug:
+        msg: '[OK] Finished, systems patched.'
+
+    - name: End playbook
+      ansible.builtin.meta: end_play
