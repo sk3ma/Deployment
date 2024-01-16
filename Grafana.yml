@@ -13,27 +13,17 @@
       ansible.builtin.debug:
         msg: '[INFO] INSTALLING DOCKER...'
 
-    - name: Installing Docker
-      ansible.builtin.apt:
-        name: 
-          - docker.io
-          - curl
-          - vim
-          - tree
-        state: present
-        update_cache: true
+    - name: Grafana container
+      ansible.builtin.debug:
+        msg: '[INFO] SPAWNING CONTAINER...'
 
-#    - name: Grafana container
-#      ansible.builtin.debug:
-#        msg: '[INFO] SPAWNING CONTAINER...'
-
-#    - name: Grafana container
-#      ansible.builtin.docker_container:
-#        name: grafana_container
-#        image: grafana/grafana
-#        ports:
-#          - "3000:3000"
-#        state: started
+    - name: Grafana container
+      ansible.builtin.docker_container:
+        name: grafana_container
+        image: grafana/grafana
+        ports:
+          - "3000:3000"
+        state: started
 
     - name: End message
       ansible.builtin.debug:
