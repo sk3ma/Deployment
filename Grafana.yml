@@ -15,9 +15,13 @@
 
     - name: Installing Docker
       ansible.builtin.apt:
-        name: docker.io
+        name: 
+          - docker.io
+          - curl
+          - vim
+          - tree
         state: present
-        update_cache: false
+        update_cache: true
 
 #    - name: Grafana container
 #      ansible.builtin.debug:
